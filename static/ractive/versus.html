@@ -1,0 +1,119 @@
+
+<!--<div id="round-picker" class="container-fluid white">
+	<div class="row"><div class="col-md-12"><h2>ROUND</h2></div></div>
+	<div class="row">
+		<div class="col-xs-0 col-sm-1"></div>
+		<div class="col-xs-0 col-sm-1"></div>
+		<div class="col-xs-3 col-sm-1"><div class="round-btn hvr-outline-out">1</div></div>
+		<div class="col-xs-3 col-sm-1"><div class="round-btn hvr-outline-out">2</div></div>
+		<div class="col-xs-3 col-sm-1"><div class="round-btn hvr-outline-out">3</div></div>
+		<div class="col-xs-3 col-sm-1"><div class="round-btn hvr-outline-out">4</div></div>
+		<div class="col-xs-3 col-sm-1"><div class="round-btn hvr-outline-out">5</div></div>
+		<div class="col-xs-3 col-sm-1"><div class="round-btn hvr-outline-out">6</div></div>
+		<div class="col-xs-3 col-sm-1"><div class="round-btn hvr-outline-out">7</div></div>
+		<div class="col-xs-3 col-sm-1"><div class="round-btn hvr-outline-out">8</div></div>
+		<div class="col-xs-0 col-sm-1"></div>
+		<div class="col-xs-0 col-sm-1"></div>
+	</div>
+</div>-->
+
+<div id="nadal-background"></div>
+<div id="opponent-background" style="background-color:#d30016;"></div> <!--TODO: PROGRAM THIS DYNAMICALLY -->
+
+<h2 id="slide6-title">MATCHUPS</h2>
+
+<div id="parent-versus-container">
+<div id="versus-container" class="container">
+	<div class="row">
+		<div id="vs-one-img" 			class="col-xs-5">	<input type="text" name="opponents-one" id="autocomplete-one" placeholder="OPPONENT">		</div>
+		<div id="vs-versus" 			class="col-xs-2">	VS 			</div>
+		<div class="vs-input"			class="col-xs-5">	<input type="text" name="opponents" id="autocomplete" placeholder="OPPONENT">	</div>
+	</div>
+	<div class="row scores-row {{ (surface=='Overall') ? 'scoresRowActive' : '' }}" on-click="changeSurface:Overall">
+		<div class="col-sm-4 hidden-xs">			</div>
+		<div class="col-sm-2 right record-overall">	OVERALL	</div>
+		<div class="col-sm-2 left  record-overall">	{{rWins['Overall']}}-{{oWins['Overall']}}	</div>
+		<div class="col-sm-4 hidden-xs">			</div>
+	</div>
+	<div class="row scores-row {{ (surface=='Grass') ? 'scoresRowActive' : '' }}" on-click="changeSurface:Grass">
+		<div class="col-xs-4">			</div>
+		<div class="col-xs-2 right">	<span style="color:#8da639;">Grass</span>	</div>
+		<div class="col-xs-2 left ">	{{rWins['Grass']}}-{{oWins['Grass']}}	</div>
+		<div class="col-xs-4">			</div>
+	</div>
+	<div class="row scores-row {{ (surface=='Clay') ? 'scoresRowActive' : '' }}" on-click="changeSurface:Clay">
+		<div class="col-xs-4">			</div>
+		<div class="col-xs-2 right">	<span style="color:#b15035;">Clay</span>	</div>
+		<div class="col-xs-2 left ">	{{rWins['Clay']}}-{{oWins['Clay']}}	</div>
+		<div class="col-xs-4">			</div>
+	</div>
+	<div class="row scores-row {{ (surface=='Hard') ? 'scoresRowActive' : '' }}" on-click="changeSurface:Hard">
+		<div class="col-xs-4">			</div>
+		<div class="col-xs-2 right">	<span style="color:#719c80;">Hard</span>	</div>
+		<div class="col-xs-2 left ">	{{rWins['Hard']}}-{{oWins['Hard']}}	</div>
+		<div class="col-xs-4">			</div>
+	</div>
+	<div class="row scores-row {{ (surface=='Carpet') ? 'scoresRowActive' : '' }}" on-click="changeSurface:Carpet">
+		<div class="col-xs-4">			</div>
+		<div class="col-xs-2 right">	<span style="color:#719c80;">Carpet</span>	</div>
+		<div class="col-xs-2 left ">	{{rWins['Carpet']}}-{{oWins['Carpet']}}	</div>
+		<div class="col-xs-4">			</div>
+	</div>
+</div>
+
+<div id="stats-container" class="container">
+			<h2 class="hidden-xs">STATS</h2>
+	<div id="stats-box" class="row">
+		<div class="col-md-3 right">
+			<div>ACES</div>
+		</div>
+		<div class="col-md-6">
+			<div class="leftBar" style="width: {{getPercentage(aces)}}%;">{{ nonzero(aces[0]) }}</div><div class="rightBar" style="width: {{100-getPercentage(aces)}}%;">{{ nonzero(aces[1]) }}</div>
+		</div>
+		<div class="col-md-3 left hidden-xs">
+			<div>ACES</div>
+		</div>
+	</div>
+	<div id="stats-box" class="row">
+		<div class="col-md-3 right">
+			<div>DOUBLE FAULTS</div>
+		</div>
+		<div class="col-md-6">
+			<div class="leftBar" style="width: {{getPercentage(df)}}%;">{{ nonzero(df[0]) }}</div><div class="rightBar" style="width: {{100-getPercentage(df)}}%;">{{ nonzero(df[1]) }}</div>
+		</div>
+		<div class="col-md-3 left hidden-xs">
+			<div>DOUBLE FAULTS</div>
+		</div>
+	</div>
+	<div id="stats-box" class="row">
+		<div class="col-md-3 right">
+			<div>FIRST SERVE WIN %</div>
+		</div>
+		<div class="col-md-6">
+			<div class="leftBar" style="width: {{getPercentage(FstWin)}}%;">{{ nonzero(FstWin[0]) }}%</div><div class="rightBar" style="width: {{100-getPercentage(FstWin) }}%;">{{ nonzero(FstWin[1]) }}%</div>
+		</div>
+		<div class="col-md-3 left hidden-xs">
+			<div>FIRST SERVE WIN %</div>
+		</div>
+	</div>
+	<div id="stats-box" class="row">
+		<div class="col-md-3 right">
+			<div>SECOND SERVE WIN %</div>
+		</div>
+		<div class="col-md-6">
+			<div class="leftBar" style="width: {{getPercentage(SndWin)}}%;">{{ nonzero(SndWin[0]) }}%</div><div class="rightBar" style="width: {{100-getPercentage(SndWin) }}%;">{{ nonzero(SndWin[1]) }}%</div>
+		</div>
+		<div class="col-md-3 left hidden-xs">
+			<div>SECOND SERVE WIN %</div>
+		</div>
+	</div>
+</div>
+
+</div>
+
+<!--
+			<div>DOUBLE FAULTS</div>
+			<div>FIRST SERVE WIN %</div>
+			<div>SECOND SERVE WIN %</div>
+			<div>BREAK POINTS SAVED</div>
+-->
