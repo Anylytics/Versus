@@ -2,7 +2,7 @@ from flask import Flask, render_template, abort, request, jsonify, g
 import sqlite3
 
 app = Flask(__name__)
-DATABASE = 'rafadb'
+DATABASE = 'atpdb'
 
 def get_db():
     db = getattr(g, '_database', None)
@@ -24,21 +24,30 @@ def connect_db():
 def home_page():
     return render_template('index.html')
 
-def search_db(opponent):
+def search_db(opponent1, opponent2):
 	c = get_db().cursor()
-	for row in c.execute('SELECT w_ace, w_df, w_svpt, w_1stIn, w_1stWon, w_2ndWon, l_ace, l_df, l_svpt, l_1stIn, l_1stWon, l_2ndWon, surface FROM matches where ( loser_name == ? )', [opponent]):
+	for row in c.execute('SELECT w_ace, w_df, w_svpt, w_1stIn, w_1stWon, w_2ndWon, l_ace, l_df, l_svpt, l_1stIn, l_1stWon, l_2ndWon, surface FROM matches where ( loser_name == ?  AND winner_name = ? )', [opponent2, opponent1]):
 		o = list(row)
 		o.append('r_win')
 		yield o
-	for row in c.execute('SELECT l_ace, l_df, l_svpt, l_1stIn, l_1stWon, l_2ndWon, w_ace, w_df, w_svpt, w_1stIn, w_1stWon, w_2ndWon, surface FROM matches where ( winner_name == ? )', [opponent]):
+	for row in c.execute('SELECT l_ace, l_df, l_svpt, l_1stIn, l_1stWon, l_2ndWon, w_ace, w_df, w_svpt, w_1stIn, w_1stWon, w_2ndWon, surface FROM matches where ( winner_name == ? AND loser_name = ? )', [opponent2, opponent1]):
 		o = list(row)
 		o.append('o_win')
 		yield o
 
+@app.route('/opponents/<player>')
+def find_opponents(player):
+	c = get_db().cursor()
+	opponents = set()
+	for row in c.execute('SELECT winner_name FROM matches where ( loser_name == ? )', [player]):
+		opponents.add(row[0])
+	for row in c.execute('SELECT loser_name FROM matches where ( winner_name == ? )', [player]):
+		opponents.add(row[0])
+	print list(opponents)
+	return jsonify(opponents=list(opponents))
 
-
-@app.route('/versus/<opponent>/<surface>')
-def find_crimes(opponent, surface):
+@app.route('/versus/<opponent1>/<opponent2>/<surface>')
+def find_stats(opponent1, opponent2, surface):
 	c = get_db().cursor()
 	features = {}
 	features['r_aces'] = 0
@@ -57,7 +66,7 @@ def find_crimes(opponent, surface):
 	features['o_win'] = {'Overall': 0, 'Clay' : 0, 'Carpet': 0, 'Hard': 0, 'Grass': 0}
 
 	
-	for row in search_db(opponent):
+	for row in search_db(opponent1, opponent2):
 		#print row
 		if ",".join(row).find(',,') == -1:
 			if surface == 'Overall' or row[12] == surface:
