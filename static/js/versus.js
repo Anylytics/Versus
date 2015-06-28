@@ -83,11 +83,7 @@ define([ 'ractive', 'rv!../ractive/versus', 'jquery', 'bootstrap', 'autocomplete
 	       //refreshData(versusRactive.get("opponent"), versusRactive.get("surface"));
 		}
 	});
-
-	$('#autocomplete').keypress(function() {
-		adjustFontSize($(this));
-	});
-
+	
 	$('#autocomplete-two').autocomplete({
 	    lookup: [""],
 	    onSelect: function (suggestion) {
@@ -101,13 +97,27 @@ define([ 'ractive', 'rv!../ractive/versus', 'jquery', 'bootstrap', 'autocomplete
 		adjustFontSize($(this));
 	});
 
+	$('#autocomplete-two').keypress(function() {
+		adjustFontSize($(this));
+	});
+
 	$('.autocomplete-suggestions').click(function() {
-		adjustFontSize($('#autocomplete'));
+   		if ($('autocomplete-one')!='') {
+   			adjustFontSize($('#autocomplete-one'));
+   		}
+   		if ($('autocomplete-two')!='') {
+   			adjustFontSize($('#autocomplete-two'));
+   		}
 	});
 
 	$('body').keyup(function(e){
 	   if(e.keyCode == 8){
-	   		adjustFontSize($('#autocomplete'));
+	   		if ($('autocomplete-one')!='') {
+	   			adjustFontSize($('#autocomplete-one'));
+	   		}
+	   		if ($('autocomplete-two')!='') {
+	   			adjustFontSize($('#autocomplete-two'));
+	   		}
 	   }
 	});
 
