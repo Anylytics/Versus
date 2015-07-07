@@ -5,7 +5,11 @@ define([ 'ractive', 'rv!../ractive/versus', 'jquery', 'bootstrap', 'autocomplete
 	  el: 'versus-ractive',
 	  data: {
 	  	opponentone: "",
+	  	opponentone_country: "",
+	  	opponenttwo_country: "",
 	  	opponenttwo: "",
+	  	advantage_name: "",
+	  	advantage_ratio: "",
 	  	surface: "Overall",
         aces: [50, 50],
         df: [50, 50],
@@ -49,6 +53,20 @@ define([ 'ractive', 'rv!../ractive/versus', 'jquery', 'bootstrap', 'autocomplete
 	            versusRactive.set("rWins", json["r_win"]);
 	            versusRactive.set("oWins", json["o_win"]);
 
+	            var adv = "B Toss Up";
+	            var wins = "";
+	            if ( parseInt(json["r_win"][surface]) > parseInt(json["o_win"][surface]) ){
+	            	adv = opponent1;
+	            	wins = json["r_win"][surface] + "/"+(parseInt(json["r_win"][surface])+parseInt(json["o_win"][surface]));
+	            }
+	            if ( parseInt(json["r_win"][surface]) < parseInt(json["o_win"][surface]) ){
+	            	adv = opponent2;
+	            	wins = json["o_win"][surface] + "/"+(parseInt(json["r_win"][surface])+parseInt(json["o_win"][surface]));
+	            }
+	            versusRactive.set("advantage_name", adv.split(" ").slice(1).join(" "));
+	            versusRactive.set("advantage_ratio", wins);
+	            versusRactive.set("opponentone_country", json['r_country']);
+	            versusRactive.set("opponenttwo_country", json['o_country']);
 	            console.log(json);
 	            
 
@@ -63,14 +81,14 @@ define([ 'ractive', 'rv!../ractive/versus', 'jquery', 'bootstrap', 'autocomplete
 	        dataTye: "json",
 	        success: function(json) {
 	        	$('#autocomplete-two').autocomplete().setOptions({lookup: json['opponents']});
-	        	console.log(json);
+	        	//console.log(json);
 	        }
 	    });
 	}
 
 	versusRactive.on( 'changeSurface', function( event, object )  {
 		versusRactive.set("surface", object);
-		refreshData(versusRactive.get("opponent"), versusRactive.get("surface"));
+		refreshData(versusRactive.get("opponentone"), versusRactive.get("opponenttwo"), versusRactive.get("surface"));
 	});
 
 	$('#autocomplete-one').autocomplete({

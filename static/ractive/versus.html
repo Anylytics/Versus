@@ -113,17 +113,17 @@
 
 <div class="flag-parent-left">
 	<div class="flag-parent-bkg-left">
-		<div class="flag-unit-bkg-left" style="background-color:#d79ba1"></div>				<!--TODO: Player 1 primary color-->
-		<div class="flag-unit-bkg-left" style="background-color:#fcec07"></div>				<!--TODO: Player 1 secondary color-->
-		<div class="flag-unit-bkg-left" style="background-color:#da010b"></div>				<!--TODO: Player 1 tertiary color-->
+		<div class="flag-unit-bkg-left" style="background-color:#{{opponentone_country['Color1']}}"></div>				<!--TODO: Player 1 primary color-->
+		<div class="flag-unit-bkg-left" style="background-color:#{{opponentone_country['Color2']}}"></div>				<!--TODO: Player 1 secondary color-->
+		<div class="flag-unit-bkg-left" style="background-color:#{{opponentone_country['Color3']}}"></div>				<!--TODO: Player 1 tertiary color-->
 	</div>
 </div>
 
 <div class="flag-parent-right">
 	<div class="flag-parent-bkg-right">
-		<div class="flag-unit-bkg-right" style="background-color:#fdfdfd"></div>			<!--TODO: Player 2 primary color-->
-		<div class="flag-unit-bkg-right" style="background-color:#d40317"></div>			<!--TODO: Player 2 secondary color-->
-		<div class="flag-unit-bkg-right" style="background-color:#000a60"></div>			<!--TODO: Player 2 tertiary color-->
+		<div class="flag-unit-bkg-right" style="background-color:#{{opponenttwo_country['Color1']}}"></div>			<!--TODO: Player 2 primary color-->
+		<div class="flag-unit-bkg-right" style="background-color:#{{opponenttwo_country['Color2']}}"></div>			<!--TODO: Player 2 secondary color-->
+		<div class="flag-unit-bkg-right" style="background-color:#{{opponenttwo_country['Color3']}}"></div>			<!--TODO: Player 2 tertiary color-->
 	</div>
 </div>
 
@@ -133,21 +133,20 @@
 			<div class="col-sm-4 vs-input">
 				<input type="text" name="opponents-one" id="autocomplete-one" placeholder="OPPONENT"><br/>
 				<ul class="stats-list-left">
-					<li><span class="stat-class">HEIGHT</span> <span class="stat-val">5'4</span></li>
-					<li><span class="stat-class">WEIGHT</span> <span class="stat-val">124lb</span></li>
+					<li><span class="stat-class">
+					{{opponentone_country['Name']}}</span></li>
 				</ul>
 			</div>
 			<div class="col-sm-4 advantage-parent">
 				<img class = "animated bounceInDown" id="versus-img" src="./static/img/tennis_ball.png"/>
 				<span id="adv-span">Advantage</span><br/>
-				<span id="adv-winner">Nadal</span><br/>
-				<span id="adv-odds">Wins 6/10</span>
+				<span id="adv-winner">{{advantage_name}}</span><br/>
+				<span id="adv-odds">{{#advantage_ratio }} Wins {{advantage_ratio}} {{/}}</span>
 			</div>
 			<div class="col-sm-4 vs-input">
 				<input type="text" name="opponents" id="autocomplete-two" placeholder="OPPONENT"><br/>
 				<ul class="stats-list-right">
-					<li><span class="stat-class">HEIGHT</span> <span class="stat-val">5'4</span></li>
-					<li><span class="stat-class">WEIGHT</span> <span class="stat-val">124lb</span></li>
+					<li><span class="stat-class">{{opponenttwo_country['Name']}}</span> </li>
 				</ul>
 			</div>
 		</div>
