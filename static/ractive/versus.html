@@ -130,7 +130,7 @@
 <div class="app-container">
 	<div class="container-fluid">
 		<div class="row" id="versus-container">
-			<div class="col-sm-4 vs-input">
+			<div class="col-sm-4 vs-input animated bounceInLeft">
 				<input type="text" name="opponents-one" id="autocomplete-one" placeholder="OPPONENT"><br/>
 				<ul class="stats-list-left">
 					<li><span class="stat-class">
@@ -143,7 +143,7 @@
 				<span id="adv-winner">{{advantage_name}}</span><br/>
 				<span id="adv-odds">{{#advantage_ratio }} Wins {{advantage_ratio}} {{/}}</span>
 			</div>
-			<div class="col-sm-4 vs-input">
+			<div class="col-sm-4 vs-input animated bounceInRight">
 				<input type="text" name="opponents" id="autocomplete-two" placeholder="OPPONENT"><br/>
 				<ul class="stats-list-right">
 					<li><span class="stat-class">{{opponenttwo_country['Name']}}</span> </li>
@@ -154,37 +154,37 @@
 	</div>
 
 	<!--{{#if rWins.length>0}}-->
-	<div class="record-container black-box animated bounceInUp">
+	<div class="record-container black-box animated bounceInUp {{ ((rWins['Overall']+oWins['Overall'])==0) ? 'scoreRowInactive' : '' }}">
 		<ul class="record-list">
 			<li>
-				<div class="row scores-row record-overall-parent {{ (surface=='Overall') ? 'scoresRowActive' : '' }}" on-click="changeSurface:Overall">
+				<div class="row scores-row record-overall-parent {{ (surface=='Overall') ? 'scoresRowActive' : '' }} {{ ((rWins['Overall']+oWins['Overall'])==0) ? 'scoreRowInactive' : '' }}" on-click="changeSurface:Overall">
 					<span class="record-class record-overall">OVERALL</span> <span class="record-val">{{rWins['Overall']}}-{{oWins['Overall']}}</span>
 				</div>
 			</li>
 			<li>
-				<div class="row scores-row {{ (surface=='Grass') ? 'scoresRowActive' : '' }}" on-click="changeSurface:Grass">
+				<div class="row scores-row {{ (surface=='Grass') ? 'scoresRowActive' : '' }} {{ ((rWins['Grass']+oWins['Grass'])==0) ? 'scoreRowInactive' : '' }}" on-click="changeSurface:Grass">
 					<span class="record-class record-overall" style="color:#8da639;">GRASS</span> <span class="record-val">{{rWins['Grass']}}-{{oWins['Grass']}}</span>
 				</div>
 			</li>
 			<li>
-				<div class="row scores-row {{ (surface=='Clay') ? 'scoresRowActive' : '' }}" on-click="changeSurface:Clay">
+				<div class="row scores-row {{ (surface=='Clay') ? 'scoresRowActive' : '' }} {{ ((rWins['Clay']+oWins['Clay'])==0) ? 'scoreRowInactive' : '' }}" on-click="changeSurface:Clay">
 					<span class="record-class record-overall" style="color:#b15035;">CLAY</span> <span class="record-val">{{rWins['Clay']}}-{{oWins['Clay']}}</span>
 				</div>
 			</li>
 			<li>
-				<div class="row scores-row {{ (surface=='Hard') ? 'scoresRowActive' : '' }}" on-click="changeSurface:Hard">
+				<div class="row scores-row {{ (surface=='Hard') ? 'scoresRowActive' : '' }} {{ ((rWins['Hard']+oWins['Hard'])==0) ? 'scoreRowInactive' : '' }}" on-click="changeSurface:Hard">
 					<span class="record-class record-overall" style="color:#719c80;">HARD</span> <span class="record-val">{{rWins['Hard']}}-{{oWins['Hard']}}</span>
 				</div>
 			</li>
 			<li>
-				<div class="row scores-row {{ (surface=='Carpet') ? 'scoresRowActive' : '' }}" on-click="changeSurface:Carpet">
+				<div class="row scores-row {{ (surface=='Carpet') ? 'scoresRowActive' : '' }} {{ ((rWins['Carpet']+oWins['Carpet'])==0) ? 'scoreRowInactive' : '' }}" on-click="changeSurface:Carpet">
 					<span class="record-class record-overall" style="color:#719c80;">CARPET</span> <span class="record-val">{{rWins['Carpet']}}-{{oWins['Carpet']}}</span>
 				</div>
 			</li>
 		</ul>
 	</div>
 
-	<div class="comparison-container black-box animated bounceInUp">
+	<div class="comparison-container black-box animated bounceInUp {{ ((aces[0]==0)||(aces[0]==50)) ? 'scoreRowInactive' : '' }}">
 
 		<div id="stats-container" class="container">
 					<h2 class="hidden-xs" style="color:whitesmoke;">STATS</h2>

@@ -412,11 +412,10 @@ div.advantage-parent {
 	padding: 25px;
 	margin-left: 40%;
 	margin-right: 15%;
-	margin-top: 10px;
+	margin-top: 30px;
 	color: whitesmoke;
 	background-color: rgba(0, 0, 0, 0.46);
-	border-bottom-left-radius: 10px;
-	border-bottom-right-radius: 10px;
+	border-radius: 10px;
 }
 
 .stats-list-right {
@@ -427,11 +426,10 @@ div.advantage-parent {
 	padding: 25px;
 	margin-left: 15%;
 	margin-right: 40%;
-	margin-top: 10px;
+	margin-top: 30px;
 	color: whitesmoke;
 	background-color: rgba(0, 0, 0, 0.46);
-	border-bottom-left-radius: 10px;
-	border-bottom-right-radius: 10px;
+	border-radius: 10px;
 }
 
 span.stat-class {
@@ -476,4 +474,8 @@ span.record-val {
 }
 .comparison-container > h2 {
 	color:whitesmoke!important;
+}
+
+.scoreRowInactive {
+	display:none;
 }

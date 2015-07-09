@@ -42,9 +42,9 @@ def search_country(country_code):
 	test = "\"Code-3\""
 	test2 = "\"" + country_code + "\""
 	test2 = "ESP"
-	print country_code
+	##print country_code
 	for row in c.execute("SELECT Country, Color1, Color2, Color3 FROM countries where ( Code3 == ? )", [country_code]):
-		print row
+		##print row
 		retval['Name'] = row[0]
 		retval['Color1'] = row[1]
 		retval['Color2'] = row[2]
