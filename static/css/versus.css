@@ -235,6 +235,12 @@ input[type=text] {
 .scoresRowActive {
 	font-size:0.4em;
 	text-decoration: underline;
+	background-color: rgba(0, 0, 0, 0.67);
+	border-radius: 10px;
+	padding-left: 10px;
+	padding-right: 10px;
+	padding-top: 5px;
+	padding-bottom: 5px;
 }
 .row.scores-row.record-overall-parent.scoresRowActive {
 	font-size:.35em;
