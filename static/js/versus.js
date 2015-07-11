@@ -62,8 +62,22 @@ define([ 'ractive', 'rv!../ractive/versus', 'jquery', 'bootstrap', 'autocomplete
 	        url: "./opponents/"+player,
 	        dataTye: "json",
 	        success: function(json) {
-	        	$('#autocomplete-two').autocomplete().setOptions({lookup: json['opponents']});
+	        	
+	        	if (versusRactive.get("opponenttwo") != "")
+				{	
+					if (json['opponents'].indexOf(player) > -1)
+					{
+						versusRactive.set("opponenttwo", "");
+						$('#autocomplete-two').autocomplete().currentValue = "";
+					}
+					else
+					{
+						refreshData(player, versusRactive.get("opponenttwo"), versusRactive.get("surface"));
+					}
+				}
+				$('#autocomplete-two').autocomplete().setOptions({lookup: json['opponents']});
 	        	console.log(json);
+	        	
 	        }
 	    });
 	}
