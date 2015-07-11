@@ -116,10 +116,10 @@ h2 {
 	font-size:.3em;
 	cursor:pointer;
   	-webkit-transition: all 0.3s ease;
-	-moz-transition: all 0.3s ease;
-	-ms-transition: all 0.3s ease;
-	-o-transition: all 0.3s ease;
-	transition: all 0.3s ease;
+	   -moz-transition: all 0.3s ease;
+	    -ms-transition: all 0.3s ease;
+	     -o-transition: all 0.3s ease;
+	        transition: all 0.3s ease;
 }
 
 #nadal-background {
@@ -448,6 +448,21 @@ span.stat-val {
 .black-box {
 	background-color: rgba(0, 0, 0, 0.46);
 	border-radius:10px;
+  	-webkit-transition: all 0.5s ease;
+	   -moz-transition: all 0.5s ease;
+	    -ms-transition: all 0.5s ease;
+	     -o-transition: all 0.5s ease;
+	        transition: all 0.5s ease;
+}
+
+.black-box:hover {
+	background-color: rgba(0, 0, 0, 0.7);
+	border-radius:0;
+  	-webkit-transition: all 0.9s ease;
+	   -moz-transition: all 0.9s ease;
+	    -ms-transition: all 0.9s ease;
+	     -o-transition: all 0.9s ease;
+	        transition: all 0.9s ease;
 }
 
 .record-container {
@@ -484,4 +499,94 @@ span.record-val {
 
 .scoreRowInactive {
 	display:none;
+}
+
+
+/*** TIMELINE ***/
+
+
+.timeline-container {
+	height:200px;
+	width:60%;
+	margin-left:20%;
+	margin-bottom:10px;
+	padding: 0 25px 25px 25px;
+	-webkit-transition: 0.3s;
+	   -moz-transition: 0.3s;
+	    -ms-transition: 0.3s;
+	     -o-transition: 0.3s;
+	        transition: 0.3s;
+}
+
+table.tg {
+	bottom: 10px;
+	position: absolute;
+	color:white;
+	width: calc( 100% - 50px );
+}
+
+#yearsRow, #playersRow {
+    font-size:1em;
+    text-align:center;
+}
+
+.playerYearContainer {
+    position:relative;
+    padding: 0 15px 0 15px;
+    -webkit-transition: height:0.8s;
+       -moz-transition: height:0.8s;
+        -ms-transition: height:0.8s;
+         -o-transition: height:0.8s;
+            transition: height:0.8s;
+}
+
+.playerYearWinsContainer {
+	position:absolute;
+    width: calc( 50% - 15px );
+    bottom:0px;
+    padding-left:5px;
+    padding-right:5px;
+}
+div.winner-left, div.winner-right {
+	width:50%;
+	display: inline-block;
+}
+
+.playerYear {
+    color:white;
+    font-size:0.8em;
+    -webkit-transition: height:0.5s;
+       -moz-transition: height:0.5s;
+        -ms-transition: height:0.5s;
+         -o-transition: height:0.5s;
+            transition: height:0.5s;
+}
+
+.playerYearOffset {
+	left: 50% ;
+}
+
+.playerYear:hover {
+    opacity:0.5;
+    -webkit-transition: opacity:0.5s;
+       -moz-transition: opacity:0.5s;
+        -ms-transition: opacity:0.5s;
+         -o-transition: opacity:0.5s;
+            transition: opacity:0.5s;
+}
+
+.playerYearActive {
+	background-color:orange;
+}
+
+.playerGrassWins {
+	background-color:#8da639;
+}
+
+.playerClayWins {
+	background-color:#b15035;
+}
+
+.playerHardWins, .playerCarpetWins {
+	background-color:#719c80;
 }

@@ -72,6 +72,82 @@
 		</ul>
 	</div>
 
+	<div class="timeline-container black-box animated bounceInUp">
+		<h2 class="hidden-xs" style="color:whitesmoke;">HISTORICAL RECORDS</h2>
+		<div id="timeline-div">
+			<table class="tg">
+				<tr>
+				<!--Loop on years here-->
+				    <th class='playerYearContainer'>
+				    <!--Loop surface wins for left side player here-->
+				    	<div class='playerYearWinsContainer'>
+				    		<div 	class="playerYear playerGrassWins" 	
+				    				data-toggle="tooltip" 
+				    				data-placement="top" 
+				    				title="Nadal won 1 game on Grass" 
+				    				style='height:10px;'>
+				    		</div>
+				    		<div 	class="playerYear playerClayWins" 	
+				    				data-toggle="tooltip" 
+				    				data-placement="top" 
+				    				title="Nadal won 4 games on Clay" 
+				    				style='height:40px;'>
+				    		</div>
+				    		<div 	class="playerYear playerHardWins" 	
+				    				data-toggle="tooltip" 
+				    				data-placement="top" 
+				    				title="Nadal won 2 games on Hard" 
+				    				style='height:20px;'>
+				    		</div>
+				    		<div 	class="playerYear playerCarpetWins" 	
+				    				data-toggle="tooltip" 
+				    				data-placement="top" 
+				    				title="Nadal won 0 games on Carpet" 
+				    				style='height:0px;'>
+				    		</div>
+				    	</div>
+				    <!--/EndLoop-->
+				    <!--Loop surface wins for right side player here-->
+				    	<div class='playerYearWinsContainer playerYearOffset'>
+				    		<div 	class="playerYear playerGrassWins" 	
+				    				data-toggle="tooltip" 
+				    				data-placement="top" 
+				    				title="Federer won 2 game on Grass" 
+				    				style='height:20px;'>
+				    		</div>
+				    		<div 	class="playerYear playerClayWins" 	
+				    				data-toggle="tooltip" 
+				    				data-placement="top" 
+				    				title="Federer won 1 games on Clay" 
+				    				style='height:10px;'>
+				    		</div>
+				    		<div 	class="playerYear playerHardWins" 	
+				    				data-toggle="tooltip" 
+				    				data-placement="top" 
+				    				title="Federer won 3 games on Hard" 
+				    				style='height:30px;'>
+				    		</div>
+				    		<div 	class="playerYear playerCarpetWins" 	
+				    				data-toggle="tooltip" 
+				    				data-placement="top" 
+				    				title="Federer won 1 games on Carpet" 
+				    				style='height:10px;'>
+				    		</div>
+				    	</div>
+				    <!--/EndLoop-->
+				    </th>
+				<!--/EndLoop-->
+				</tr>
+				<tr id='playersRow'>
+					<td><div class="winner-left">RN</div><div class="winner-right">RF</div></td>
+				</tr>
+				<tr id='yearsRow'>
+					<td>2013</td>
+				</tr>
+			</table>
+		</div>
+	</div>
+
 	<div class="comparison-container black-box animated bounceInUp {{ (((aces[0]+aces[1])==0)||(aces[0]==50)) ? 'scoreRowInactive' : '' }}">
 
 		<div id="stats-container" class="container">

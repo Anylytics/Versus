@@ -205,6 +205,11 @@ define([ 'ractive', 'rv!../ractive/versus', 'jquery', 'bootstrap', 'autocomplete
 
 	}
 
+	$(function () {
+	  $('[data-toggle="tooltip"]').tooltip()
+	})
+
+
     return versusRactive;
 
 });
