@@ -26,11 +26,11 @@ def home_page():
 
 def search_db(opponent1, opponent2):
 	c = get_db().cursor()
-	for row in c.execute('SELECT w_ace, w_df, w_svpt, w_1stIn, w_1stWon, w_2ndWon, l_ace, l_df, l_svpt, l_1stIn, l_1stWon, l_2ndWon, surface, winner_ioc, loser_ioc FROM matches where ( loser_name == ?  AND winner_name = ? )', [opponent2, opponent1]):
+	for row in c.execute('SELECT w_ace, w_df, w_svpt, w_1stIn, w_1stWon, w_2ndWon, l_ace, l_df, l_svpt, l_1stIn, l_1stWon, l_2ndWon, surface FROM matches where ( loser_name == ?  AND winner_name = ? )', [opponent2, opponent1]):
 		o = list(row)
 		o.append('r_win')
 		yield o
-	for row in c.execute('SELECT l_ace, l_df, l_svpt, l_1stIn, l_1stWon, l_2ndWon, w_ace, w_df, w_svpt, w_1stIn, w_1stWon, w_2ndWon, surface, loser_ioc, winner_ioc  FROM matches where ( winner_name == ? AND loser_name = ? )', [opponent2, opponent1]):
+	for row in c.execute('SELECT l_ace, l_df, l_svpt, l_1stIn, l_1stWon, l_2ndWon, w_ace, w_df, w_svpt, w_1stIn, w_1stWon, w_2ndWon, surface FROM matches where ( winner_name == ? AND loser_name = ? )', [opponent2, opponent1]):
 		o = list(row)
 		o.append('o_win')
 		yield o
@@ -39,11 +39,9 @@ def search_country(country_code):
 
 	c = get_db().cursor()
 	retval = {}
-	test = "\"Code-3\""
-	test2 = "\"" + country_code + "\""
-	test2 = "ESP"
+	print country_code
 	##print country_code
-	for row in c.execute("SELECT Country, Color1, Color2, Color3 FROM countries where ( Code3 == ? )", [country_code]):
+	for row in c.execute("SELECT Country, Color1, Color2, Color3 FROM countries where ( IOC2 == ? )", [country_code]):
 		##print row
 		retval['Name'] = row[0]
 		retval['Color1'] = row[1]
@@ -63,6 +61,18 @@ def find_opponents(player):
 	#print list(opponents)
 	return jsonify(opponents=list(opponents))
 
+@app.route('/country/<player>')
+def find_country(player):
+	c = get_db().cursor()
+	ioc = ""
+	for row in c.execute('SELECT winner_ioc FROM matches where ( winner_name == ? ) limit 1', [player]):
+		ioc = row[0]
+	if (ioc == ""):
+		for row in c.execute('SELECT loser_ioc FROM matches where ( loser_name == ? ) limit 1', [player]):
+			ioc = row[0]
+	country = search_country(ioc)
+	return jsonify(country=country);
+
 @app.route('/versus/<opponent1>/<opponent2>/<surface>')
 def find_stats(opponent1, opponent2, surface):
 	c = get_db().cursor()
@@ -81,9 +91,6 @@ def find_stats(opponent1, opponent2, surface):
 	features['o_1stWon'] = 0
 	features['o_2ndWon'] = 0
 	features['o_win'] = {'Overall': 0, 'Clay' : 0, 'Carpet': 0, 'Hard': 0, 'Grass': 0}
-
-	opp1_ioc = ''
-	opp2_ioc = ''
 	
 	for row in search_db(opponent1, opponent2):
 		if ",".join(row).find(',,') == -1:
@@ -101,13 +108,8 @@ def find_stats(opponent1, opponent2, surface):
 				features['o_1stIn'] = features['o_1stIn'] + int(row[9])
 				features['o_1stWon'] = features['o_1stWon'] + int(row[10])
 				features['o_2ndWon'] = features['o_2ndWon'] + int(row[11])
-		features[row[15]]['Overall'] = features[row[15]]['Overall'] + 1
-		features[row[15]][row[12]] = features[row[15]][row[12]] + 1
-		opp1_ioc = row[13]
-		opp2_ioc = row[14]
-
-	features["r_country"] = search_country(opp1_ioc)
-	features["o_country"] = search_country(opp2_ioc)
+		features[row[13]]['Overall'] = features[row[13]]['Overall'] + 1
+		features[row[13]][row[12]] = features[row[13]][row[12]] + 1	
 
 	
 		

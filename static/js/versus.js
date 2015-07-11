@@ -28,8 +28,31 @@ define([ 'ractive', 'rv!../ractive/versus', 'jquery', 'bootstrap', 'autocomplete
 	  template: html
 	});
 
+	function clearData() 
+	{
+		versusRactive.set("aces", [50, 50]);
+		versusRactive.set("df",[50, 50]);
+		versusRactive.set("FstWin", [50, 50]);
+		versusRactive.set("SndWin", [50, 50]);
+		versusRactive.set("rWins", {'Overall': 0, 'Clay' : 0, 'Carpet': 0, 'Hard': 0, 'Grass': 0});
+		versusRactive.set("oWins", {'Overall': 0, 'Clay' : 0, 'Carpet': 0, 'Hard': 0, 'Grass': 0});
+		versusRactive.set("advantage_name", "");
+		versusRactive.set("advantage_ratio", "");
+		versusRactive.set("opponentone_country", "");
+		versusRactive.set("opponenttwo_country", "");
+	}
+
 	function refreshData(opponent1, opponent2, surface)
 	{
+
+		$.ajax({
+	        url: "./country/"+opponent2,
+	        dataTye: "json",
+	        success: function(json) {
+	        	versusRactive.set("opponenttwo_country", json['country']);
+	        }
+	    });
+
 		$.ajax({
 	        url: "./versus/"+opponent1+"/"+opponent2+"/"+surface,
 	        dataTye: "json",
@@ -65,8 +88,8 @@ define([ 'ractive', 'rv!../ractive/versus', 'jquery', 'bootstrap', 'autocomplete
 	            }
 	            versusRactive.set("advantage_name", adv.split(" ").slice(1).join(" "));
 	            versusRactive.set("advantage_ratio", wins);
-	            versusRactive.set("opponentone_country", json['r_country']);
-	            versusRactive.set("opponenttwo_country", json['o_country']);
+	            
+	            //versusRactive.set("opponenttwo_country", json['o_country']);
 	            console.log(json);
 	            
 
@@ -76,17 +99,29 @@ define([ 'ractive', 'rv!../ractive/versus', 'jquery', 'bootstrap', 'autocomplete
 
 	function refreshOpponents(player)
 	{
+		
+		clearData();
+
+		$.ajax({
+	        url: "./country/"+player,
+	        dataTye: "json",
+	        success: function(json) {
+	        	versusRactive.set("opponentone_country", json['country']);
+	        }
+	    });
+
+
 		$.ajax({
 	        url: "./opponents/"+player,
 	        dataTye: "json",
 	        success: function(json) {
-	        	
 	        	if (versusRactive.get("opponenttwo") != "")
 				{	
-					if (json['opponents'].indexOf(player) > -1)
+					if (json['opponents'].indexOf(versusRactive.get("opponenttwo")) == -1)
 					{
 						versusRactive.set("opponenttwo", "");
-						$('#autocomplete-two').autocomplete().currentValue = "";
+						$('#autocomplete-two').autocomplete().clear();
+						$('#autocomplete-two').autocomplete().element.value = "";
 					}
 					else
 					{
@@ -97,6 +132,10 @@ define([ 'ractive', 'rv!../ractive/versus', 'jquery', 'bootstrap', 'autocomplete
 	        	console.log(json);
 	        }
 	    });
+
+
+
+		
 	}
 
 	versusRactive.on( 'changeSurface', function( event, object )  {
@@ -107,18 +146,17 @@ define([ 'ractive', 'rv!../ractive/versus', 'jquery', 'bootstrap', 'autocomplete
 	$('#autocomplete-one').autocomplete({
 	    lookup: opponents,
 	    onSelect: function (suggestion) {
-	       //console.log(suggestion.value);
-	       versusRactive.set("opponentone", suggestion.value);
-	       refreshOpponents(versusRactive.get("opponentone"));
-
-	       //refreshData(versusRactive.get("opponent"), versusRactive.get("surface"));
+	       if (!(suggestion.value === versusRactive.get("opponentone")))
+		   {
+		       versusRactive.set("opponentone", suggestion.value);
+		       refreshOpponents(versusRactive.get("opponentone"));
+		   }
 		}
 	});
 	
 	$('#autocomplete-two').autocomplete({
 	    lookup: [""],
 	    onSelect: function (suggestion) {
-	       //console.log(suggestion.value);
 	       versusRactive.set("opponenttwo", suggestion.value);
 	       refreshData(versusRactive.get("opponentone"), versusRactive.get("opponenttwo"), versusRactive.get("surface"));
 		}
