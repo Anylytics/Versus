@@ -26,17 +26,16 @@ def home_page():
 
 def search_db(opponent1, opponent2):
 	c = get_db().cursor()
-	for row in c.execute('SELECT w_ace, w_df, w_svpt, w_1stIn, w_1stWon, w_2ndWon, l_ace, l_df, l_svpt, l_1stIn, l_1stWon, l_2ndWon, surface FROM matches where ( loser_name == ?  AND winner_name = ? )', [opponent2, opponent1]):
+	for row in c.execute('SELECT w_ace, w_df, w_svpt, w_1stIn, w_1stWon, w_2ndWon, l_ace, l_df, l_svpt, l_1stIn, l_1stWon, l_2ndWon, surface, year FROM matches where ( loser_name == ?  AND winner_name = ? )', [opponent2, opponent1]):
 		o = list(row)
 		o.append('r_win')
 		yield o
-	for row in c.execute('SELECT l_ace, l_df, l_svpt, l_1stIn, l_1stWon, l_2ndWon, w_ace, w_df, w_svpt, w_1stIn, w_1stWon, w_2ndWon, surface FROM matches where ( winner_name == ? AND loser_name = ? )', [opponent2, opponent1]):
+	for row in c.execute('SELECT l_ace, l_df, l_svpt, l_1stIn, l_1stWon, l_2ndWon, w_ace, w_df, w_svpt, w_1stIn, w_1stWon, w_2ndWon, surface, year FROM matches where ( winner_name == ? AND loser_name = ? )', [opponent2, opponent1]):
 		o = list(row)
 		o.append('o_win')
 		yield o
 
-def search_country(country_code):
-
+def search_country(country_code):	
 	c = get_db().cursor()
 	retval = {}
 	print country_code
@@ -91,6 +90,7 @@ def find_stats(opponent1, opponent2, surface):
 	features['o_1stWon'] = 0
 	features['o_2ndWon'] = 0
 	features['o_win'] = {'Overall': 0, 'Clay' : 0, 'Carpet': 0, 'Hard': 0, 'Grass': 0}
+	features['wintimeline'] = {}
 	
 	for row in search_db(opponent1, opponent2):
 		if ",".join(row).find(',,') == -1:
@@ -108,11 +108,23 @@ def find_stats(opponent1, opponent2, surface):
 				features['o_1stIn'] = features['o_1stIn'] + int(row[9])
 				features['o_1stWon'] = features['o_1stWon'] + int(row[10])
 				features['o_2ndWon'] = features['o_2ndWon'] + int(row[11])
-		features[row[13]]['Overall'] = features[row[13]]['Overall'] + 1
-		features[row[13]][row[12]] = features[row[13]][row[12]] + 1	
+		features[row[14]]['Overall'] = features[row[14]]['Overall'] + 1
+		features[row[14]][row[12]] = features[row[14]][row[12]] + 1	
+		if row[13] not in features['wintimeline']:
+			features['wintimeline'][row[13]] = {'r_win': {'Clay' : {'wins':0, 'norm': 0.0}, 'Carpet': {'wins':0, 'norm': 0.0}, 'Hard': {'wins':0, 'norm': 0.0}, 'Grass': {'wins':0, 'norm': 0.0}, 'Overall': 0}, 'o_win': {'Clay' : {'wins':0, 'norm': 0.0}, 'Carpet': {'wins':0, 'norm': 0.0}, 'Hard': {'wins':0, 'norm': 0.0}, 'Grass': {'wins':0, 'norm': 0.0}, "Overall": 0}}
+		features['wintimeline'][row[13]][row[14]][row[12]]['wins'] += 1
+		features['wintimeline'][row[13]][row[14]]['Overall'] += 1
 
-	
-		
+	#Go through and normalize win timeline
+	for year in features['wintimeline'].values():
+		total = max(year['r_win']['Overall'], year['o_win']['Overall'])
+		for player in year.values():
+			del player['Overall']
+			if total > 0:
+				for surface in player.values():	
+					surface['norm'] = float(surface['wins'])/float(total)
+			#Delete the Overall category
+			
 
 	return jsonify(features)
 	

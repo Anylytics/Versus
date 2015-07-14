@@ -77,72 +77,43 @@
 		<div id="timeline-div">
 			<table class="tg">
 				<tr>
-				<!--Loop on years here-->
+				{{#wintimeline:year}}
 				    <th class='playerYearContainer'>
-				    <!--Loop surface wins for left side player here-->
 				    	<div class='playerYearWinsContainer'>
-				    		<div 	class="playerYear playerGrassWins" 	
+				    	{{#r_win:surface}}
+				    	
+				    		<div 	class="playerYear player{{surface}}Wins" 	
 				    				data-toggle="tooltip" 
 				    				data-placement="top" 
-				    				title="Nadal won 1 game on Grass" 
-				    				style='height:10px;'>
+				    				title="{{opponentone}} won {{wins}} game on {{surface}}" 
+				    				style='height:{{norm*70}}px;'>
 				    		</div>
-				    		<div 	class="playerYear playerClayWins" 	
-				    				data-toggle="tooltip" 
-				    				data-placement="top" 
-				    				title="Nadal won 4 games on Clay" 
-				    				style='height:40px;'>
-				    		</div>
-				    		<div 	class="playerYear playerHardWins" 	
-				    				data-toggle="tooltip" 
-				    				data-placement="top" 
-				    				title="Nadal won 2 games on Hard" 
-				    				style='height:20px;'>
-				    		</div>
-				    		<div 	class="playerYear playerCarpetWins" 	
-				    				data-toggle="tooltip" 
-				    				data-placement="top" 
-				    				title="Nadal won 0 games on Carpet" 
-				    				style='height:0px;'>
-				    		</div>
+				    	{{/r_win}}
 				    	</div>
-				    <!--/EndLoop-->
 				    <!--Loop surface wins for right side player here-->
 				    	<div class='playerYearWinsContainer playerYearOffset'>
-				    		<div 	class="playerYear playerGrassWins" 	
+				    	{{#o_win:surface}}
+				    		<div 	class="playerYear player{{surface}}Wins" 	
 				    				data-toggle="tooltip" 
 				    				data-placement="top" 
-				    				title="Federer won 2 game on Grass" 
-				    				style='height:20px;'>
+				    				title="{{opponenttwo}} won {{wins}} game on {{surface}}" 
+				    				style='height:{{norm*70}}px;'>
 				    		</div>
-				    		<div 	class="playerYear playerClayWins" 	
-				    				data-toggle="tooltip" 
-				    				data-placement="top" 
-				    				title="Federer won 1 games on Clay" 
-				    				style='height:10px;'>
-				    		</div>
-				    		<div 	class="playerYear playerHardWins" 	
-				    				data-toggle="tooltip" 
-				    				data-placement="top" 
-				    				title="Federer won 3 games on Hard" 
-				    				style='height:30px;'>
-				    		</div>
-				    		<div 	class="playerYear playerCarpetWins" 	
-				    				data-toggle="tooltip" 
-				    				data-placement="top" 
-				    				title="Federer won 1 games on Carpet" 
-				    				style='height:10px;'>
-				    		</div>
+				    	{{/o_win}}
 				    	</div>
 				    <!--/EndLoop-->
 				    </th>
-				<!--/EndLoop-->
+				{{/wintimeline}}
 				</tr>
 				<tr id='playersRow'>
-					<td><div class="winner-left">RN</div><div class="winner-right">RF</div></td>
+					{{#wintimeline:year}}
+						<td><div class="winner-left">{{opponentone_initials}}</div><div class="winner-right">{{opponenttwo_initials}}</div></td>
+					{{/wintimeline}}
 				</tr>
 				<tr id='yearsRow'>
-					<td>2013</td>
+					{{#wintimeline:year}}
+						<td>{{year}}</td>
+					{{/wintimeline}}
 				</tr>
 			</table>
 		</div>

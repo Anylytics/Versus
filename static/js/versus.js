@@ -10,6 +10,9 @@ define([ 'ractive', 'rv!../ractive/versus', 'jquery', 'bootstrap', 'autocomplete
 	  	opponenttwo: "",
 	  	advantage_name: "",
 	  	advantage_ratio: "",
+	  	opponentone_initials: "",
+	  	opponenttwo_initials: "",
+	  	wintimeline: {},
 	  	surface: "Overall",
         aces: [50, 50],
         df: [50, 50],
@@ -40,6 +43,9 @@ define([ 'ractive', 'rv!../ractive/versus', 'jquery', 'bootstrap', 'autocomplete
 		versusRactive.set("advantage_ratio", "");
 		versusRactive.set("opponentone_country", "");
 		versusRactive.set("opponenttwo_country", "");
+		versusRactive.set("wintimeline", "");
+		versusRactive.set("opponentone_initials", "");
+		versusRactive.set("opponenttwo_initials", "");
 	}
 
 	function refreshData(opponent1, opponent2, surface)
@@ -87,7 +93,10 @@ define([ 'ractive', 'rv!../ractive/versus', 'jquery', 'bootstrap', 'autocomplete
 	            	wins = json["o_win"][surface] + "/"+(parseInt(json["r_win"][surface])+parseInt(json["o_win"][surface]));
 	            }
 	            versusRactive.set("advantage_name", adv.split(" ").slice(1).join(" "));
+	            versusRactive.set("opponentone_initials", opponent1.split(' ').map(function (s) { return s.charAt(0); }).join(''));
+	            versusRactive.set("opponenttwo_initials", opponent2.split(' ').map(function (s) { return s.charAt(0); }).join(''));
 	            versusRactive.set("advantage_ratio", wins);
+	            versusRactive.set("wintimeline", json["wintimeline"])
 	            
 	            //versusRactive.set("opponenttwo_country", json['o_country']);
 	            console.log(json);
