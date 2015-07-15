@@ -70,7 +70,12 @@ def find_country(player):
 		for row in c.execute('SELECT loser_ioc FROM matches where ( loser_name == ? ) limit 1', [player]):
 			ioc = row[0]
 	country = search_country(ioc)
-	return jsonify(country=country);
+	#TODO: This needs to be refactored
+	# Search also for the player's ID
+	playerID = ""
+	for row in c.execute('SELECT ID FROM players where ( Name == ? ) limit 1', [player]):
+		playerID = row[0]
+	return jsonify(country=country, playerID=playerID);
 
 @app.route('/versus/<opponent1>/<opponent2>/<surface>')
 def find_stats(opponent1, opponent2, surface):

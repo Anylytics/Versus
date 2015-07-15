@@ -5,9 +5,11 @@ define([ 'ractive', 'rv!../ractive/versus', 'jquery', 'bootstrap', 'autocomplete
 	  el: 'versus-ractive',
 	  data: {
 	  	opponentone: "",
+	  	opponentoneID: "",
 	  	opponentone_country: "",
 	  	opponenttwo_country: "",
 	  	opponenttwo: "",
+	  	opponenttwoID: "",
 	  	advantage_name: "",
 	  	advantage_ratio: "",
 	  	opponentone_initials: "",
@@ -46,6 +48,8 @@ define([ 'ractive', 'rv!../ractive/versus', 'jquery', 'bootstrap', 'autocomplete
 		versusRactive.set("wintimeline", "");
 		versusRactive.set("opponentone_initials", "");
 		versusRactive.set("opponenttwo_initials", "");
+		versusRactive.set("opponentoneID", "");
+		versusRactive.set("opponenttwoID", "");
 	}
 
 	function refreshData(opponent1, opponent2, surface)
@@ -56,6 +60,7 @@ define([ 'ractive', 'rv!../ractive/versus', 'jquery', 'bootstrap', 'autocomplete
 	        dataTye: "json",
 	        success: function(json) {
 	        	versusRactive.set("opponenttwo_country", json['country']);
+	        	versusRactive.set("opponenttwoID", json["playerID"]);
 	        }
 	    });
 
@@ -116,6 +121,8 @@ define([ 'ractive', 'rv!../ractive/versus', 'jquery', 'bootstrap', 'autocomplete
 	        dataTye: "json",
 	        success: function(json) {
 	        	versusRactive.set("opponentone_country", json['country']);
+	        	versusRactive.set("opponentoneID", json['playerID']);
+	        	console.log(json['playerID']);
 	        }
 	    });
 
