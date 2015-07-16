@@ -60,6 +60,27 @@ def find_opponents(player):
 	#print list(opponents)
 	return jsonify(opponents=list(opponents))
 
+@app.route('/id/<player>')
+def find_ID(player):
+	c = get_db().cursor()
+	#TODO: This needs to be refactored
+	# Search also for the player's ID
+	playerID = ""
+	for row in c.execute('SELECT ID FROM players where ( Name == ? ) limit 1', [player]):
+		playerID = row[0]
+	return jsonify(playerID=playerID);
+
+@app.route('/name/<ID1>/<ID2>')
+def find_name(ID1, ID2):
+	c = get_db().cursor()
+	playerName1 = ""
+	for row in c.execute('SELECT Name FROM players where ( ID == ? ) limit 1', [int(ID1)]):
+		playerName1 = row[0]
+	playerName2 = ""
+	for row in c.execute('SELECT Name FROM players where ( ID == ? ) limit 1', [int(ID2)]):
+		playerName2 = row[0]
+	return jsonify(name=[playerName1, playerName2]);
+
 @app.route('/country/<player>')
 def find_country(player):
 	c = get_db().cursor()
@@ -70,12 +91,7 @@ def find_country(player):
 		for row in c.execute('SELECT loser_ioc FROM matches where ( loser_name == ? ) limit 1', [player]):
 			ioc = row[0]
 	country = search_country(ioc)
-	#TODO: This needs to be refactored
-	# Search also for the player's ID
-	playerID = ""
-	for row in c.execute('SELECT ID FROM players where ( Name == ? ) limit 1', [player]):
-		playerID = row[0]
-	return jsonify(country=country, playerID=playerID);
+	return jsonify(country=country);
 
 @app.route('/versus/<opponent1>/<opponent2>/<surface>')
 def find_stats(opponent1, opponent2, surface):

@@ -1,5 +1,6 @@
 // Now we've configured RequireJS, we can load our dependencies and start
-define([ 'ractive', 'rv!../ractive/versus', 'jquery', 'bootstrap', 'autocomplete', 'players'], function ( Ractive, html, $, bootstrap, autocomp, opponents) {
+define([ 'ractive', 'rv!../ractive/versus', 'jquery', 'bootstrap', 'autocomplete', 'players', 'history'], function ( Ractive, html, $, bootstrap, autocomp, opponents, hist) {
+
 
 	var versusRactive = new Ractive({
 	  el: 'versus-ractive',
@@ -52,15 +53,52 @@ define([ 'ractive', 'rv!../ractive/versus', 'jquery', 'bootstrap', 'autocomplete
 		versusRactive.set("opponenttwoID", "");
 	}
 
+
+
+	function convertNumber(number)
+	{
+		var str = "" + number
+		var pad = "0000"
+		var ans = pad.substring(0, pad.length - str.length) + str
+		return ans
+	}
+
+	function loadMatch(ID1, ID2)
+	{
+		$.ajax({
+	        url: "./name/"+ID1+"/"+ID2,
+	        dataTye: "json",
+	        success: function(json) {
+	        	console.log(json["name"]);
+	        	versusRactive.set("opponentone", json["name"][0]);
+	        	versusRactive.set("opponenttwo", json["name"][1]);
+	        	$('#autocomplete-one').autocomplete().clear();
+				$('#autocomplete-one').autocomplete().element.value = json["name"][0];
+				$('#autocomplete-two').autocomplete().clear();
+				$('#autocomplete-two').autocomplete().element.value = json["name"][1];
+	        	refreshOpponents(json["name"][0]);
+	        	refreshData(json["name"][0], json["name"][1], "Overall");
+	        }
+	    });
+
+	   
+	}
+
 	function refreshData(opponent1, opponent2, surface)
 	{
+		$.ajax({
+	        url: "./id/"+opponent2,
+	        dataTye: "json",
+	        success: function(json) {
+	        	versusRactive.set("opponenttwoID", json["playerID"]);
+	        }
+	    });
 
 		$.ajax({
 	        url: "./country/"+opponent2,
 	        dataTye: "json",
 	        success: function(json) {
 	        	versusRactive.set("opponenttwo_country", json['country']);
-	        	versusRactive.set("opponenttwoID", json["playerID"]);
 	        }
 	    });
 
@@ -68,6 +106,9 @@ define([ 'ractive', 'rv!../ractive/versus', 'jquery', 'bootstrap', 'autocomplete
 	        url: "./versus/"+opponent1+"/"+opponent2+"/"+surface,
 	        dataTye: "json",
 	        success: function(json) {
+	        	//Generate URL
+	        	var url = convertNumber(versusRactive.get("opponentoneID")) + convertNumber(versusRactive.get("opponenttwoID"));
+	        	History.pushState(null, url, "?match="+url); 
 	            // Calculate Ace Percentage
 	            versusRactive.set("aces", [json["r_aces"], json["o_aces"]] );
 
@@ -117,12 +158,19 @@ define([ 'ractive', 'rv!../ractive/versus', 'jquery', 'bootstrap', 'autocomplete
 		clearData();
 
 		$.ajax({
+	        url: "./id/"+player,
+	        dataTye: "json",
+	        success: function(json) {
+	        	versusRactive.set("opponentoneID", json['playerID']);
+	        }
+	    });
+
+
+		$.ajax({
 	        url: "./country/"+player,
 	        dataTye: "json",
 	        success: function(json) {
 	        	versusRactive.set("opponentone_country", json['country']);
-	        	versusRactive.set("opponentoneID", json['playerID']);
-	        	console.log(json['playerID']);
 	        }
 	    });
 
@@ -224,6 +272,19 @@ define([ 'ractive', 'rv!../ractive/versus', 'jquery', 'bootstrap', 'autocomplete
 	$(function () {
 	  $('[data-toggle="tooltip"]').tooltip()
 	})
+
+	//Get the State (matchID) if one exists
+	var matchID = History.getState()['title'];
+	if (matchID != "")
+	{
+		var ID1 = matchID.substring(0,4);
+		var ID2 = matchID.substring(4);
+		if (!isNaN(ID1) & !isNaN(ID2))
+		{
+			//Passed basic validation. Attempt to pollinate database
+			loadMatch(ID1, ID2);
+		}
+	}
 
 
     return versusRactive;

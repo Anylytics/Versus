@@ -9,7 +9,8 @@ require.config({
         jqueryui: 'lib/jquery_ui',
         versus: 'versus',
 		bootstrap: 'bootstrap/bootstrap.min',
-        autocomplete: 'lib/jquery.autocomplete'
+        autocomplete: 'lib/jquery.autocomplete',
+        history: 'lib/jquery.history'
     },
     shim: {
     	"fullpage": {
@@ -28,6 +29,9 @@ require.config({
             deps: ["jquery"]
         },
         'autocomplete': {
+            deps: ["jquery"]
+        },
+        'history': {
             deps: ["jquery"]
         }
     }
